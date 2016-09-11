@@ -5,8 +5,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_SOURCE_DIR}/Source/ThirdParty/FreeType/include
                     ${CMAKE_SOURCE_DIR}/Source/ThirdParty/Box2D)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fapplication-extension")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fapplication-extension")
+# TODO: Look into the application-extension flag for iOS
+#if (IOS)
+#    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fapplication-extension")
+#    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fapplication-extension")
+#endif()
 
 set (CSATOMICDIR "${CMAKE_SOURCE_DIR}/Artifacts/Build/Source/Generated/CSharp/Packages/")
 
@@ -87,8 +90,8 @@ add_custom_command( TARGET AtomicNETNative POST_BUILD
 
 else()
 
-    # iOS: We need to copy/zip the framework on iOS, the framework must also be code signed and POST_BUILD is triggered before this occurs, so handled in BuildIOS.js
-
+    # iOS: We need to copy/zip the framework on iOS, the framework must also be code signed and POST_BUILD is triggered before this occurs,
+    # so handled in BuildIOS.js
     add_custom_command( TARGET AtomicNETNative POST_BUILD
                         COMMAND install_name_tool -id @rpath/AtomicNETNative.framework/AtomicNETNative \"$<TARGET_FILE:AtomicNETNative>\")
 

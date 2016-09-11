@@ -39,7 +39,7 @@
 #endif
 
 // Android or iOS: use SDL_main
-#if defined(__ANDROID__) || defined(IOS)
+#if defined(__ANDROID__)
 
 typedef int(*sdl_entry_callback)();
 

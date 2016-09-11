@@ -65,10 +65,16 @@ namespace Atomic
             obj->SendEvent(eventType, vmap ? vmap->GetVariantMap() : obj->GetEventDataMap());
         }
 
-        ATOMIC_EXPORT_API ClassID csi_Atomic_NETCore_Initialize(NETCoreDelegates* delegates)
+        ATOMIC_EXPORT_API ClassID csi_Atomic_NETCore_Initialize(NETCoreEventDispatchFunction eventDispatch, NETCoreUpdateDispatchFunction updateDispatch)
         {
             Context* context = new Context();
-            NETCore* netCore = new NETCore(context, delegates);
+
+            // NOTE: We don't simply marshal the NETCoreDelegates structure due to iOS "reverse callback" limitation
+            NETCoreDelegates delegates;
+            delegates.eventDispatch = eventDispatch;
+            delegates.updateDispatch = updateDispatch;
+
+            NETCore* netCore = new NETCore(context, &delegates);
             context->RegisterSubsystem(netCore);
             return netCore;
         }
